@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "qr-verifier",
+    "slug": "qr-verifier",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-secure-store"
+    ],
+    "extra": {
+      "apiBaseUrl": "http://192.168.197.189:5000",
+      "apiTimeout": "10000",
+      "nodeEnv": "development",
+      "appEnv": "development",
+      "healthEndpoint": "/api/health",
+      "qrVerifyEndpoint": "/api/bookings/qr-details",
+      "qrMarkUsedEndpoint": "/api/bookings/mark-used",
+      "authLoginEndpoint": "/api/auth/login",
+      "authSignupEndpoint": "/api/auth/sign-up",
+      "androidEmulatorApiUrl": "http://10.0.2.2:5000",
+      "iosSimulatorApiUrl": "http://localhost:5000",
+      "deviceApiUrl": "http://192.168.197.189:5000",
+      "fallbackApiUrls": "http://192.168.197.189:5000,http://10.0.2.2:5000,http://localhost:5000",
+      "debugMode": "true",
+      "enableNetworkDebugging": "true",
+      "enableApiLogging": "true",
+      "secureStoreKeyPrefix": "dandiya_qr_"
+    }
+  }
+}
