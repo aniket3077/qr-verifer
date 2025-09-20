@@ -7,7 +7,7 @@ import {
   StatusBar,
   ImageBackground,
 } from 'react-native';
-import { Video } from 'expo-av';
+import { VideoView, useVideoPlayer } from 'expo-video';
 import {
   PaperProvider,
   Button,
@@ -56,6 +56,13 @@ function QRVerifierApp() {
   const [loginLoading, setLoginLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const passwordRef = useRef(null);
+
+  // Create video player for background video
+  const player = useVideoPlayer('https://res.cloudinary.com/debuvwpnt/video/upload/v1758289731/mlcyupycc2lz0i3syirl.mp4', player => {
+    player.loop = true;
+    player.muted = true;
+    player.play();
+  });
 
   useEffect(() => {
     checkAuthStatus();
@@ -148,7 +155,7 @@ function QRVerifierApp() {
           setIsAuthenticated(true);
           Alert.alert('Success', 'Welcome ' + (result.user.displayName || result.user.email) + '!');
         } else {
-          Alert.alert('Login Failed', result.error || demoResult.error || 'Invalid credentials. Try: admin@dandiya.com / admin123');
+          Alert.alert('Login Failed', result.error || demoResult.error || 'Invalid credentials. Please try again.');
         }
       }
     } catch (error) {
@@ -228,13 +235,14 @@ function QRVerifierApp() {
   if (!isAuthenticated) {
     return (
       <View style={styles.container}>
-        <Video
-          source={{ uri: 'https://qczbnczsidlzzwziubhu.supabase.co/storage/v1/object/public/malangdandiya/bg.mp4' }}
+        <VideoView
+          player={player}
           style={styles.backgroundVideo}
-          shouldPlay
-          isLooping
-          isMuted
-          resizeMode="cover"
+          contentFit="cover"
+          pointerEvents="none"
+          fullscreenOptions={{ allowsFullscreen: false }}
+          allowsPictureInPicture={false}
+          onError={(e) => console.warn('Background video error:', e?.nativeEvent ?? e)}
         />
         <SafeAreaView style={styles.container}>
           <View style={styles.overlay} />
@@ -251,7 +259,7 @@ function QRVerifierApp() {
               <Card.Content>
                 <Title style={styles.loginTitle}>Staff Login</Title>
                 <Paragraph style={styles.demoText}>
-                  Demo: admin@dandiya.com / admin123 or staff@dandiya.com / staff123
+                
                 </Paragraph>
                 <Paragraph style={styles.debugText}>
                   QR Test: {`{"ticketNumber":"test-123","bookingId":"1"}`}
@@ -340,11 +348,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   backgroundVideo: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
+    ...StyleSheet.absoluteFillObject,
     zIndex: -1,
   },
   overlay: {
